@@ -991,6 +991,37 @@ Transform:
   m_Father: {fileID: 4026913370985717855}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4895859317175677854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3949095178173764040}
+  m_Layer: 0
+  m_Name: CameraArm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3949095178173764040
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4895859317175677854}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.16839662, y: 0.95748895, z: -0.03942418}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4341371666308976486}
+  m_Father: {fileID: 8192465472615507453}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4947916946438536463
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,7 +1121,7 @@ Transform:
   - {fileID: 4976689485890279937}
   - {fileID: 676711644591802524}
   - {fileID: 667196881633586066}
-  - {fileID: 4341371666308976486}
+  - {fileID: 3949095178173764040}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1129,6 +1160,10 @@ MonoBehaviour:
   MoveX: 0
   MoveZ: 0
   animator: {fileID: 0}
+  camera: {fileID: 6700184743180214434}
+  cameraArm: {fileID: 4895859317175677854}
+  CameraRotateSpeed: 2
+  CameraPan: 0
 --- !u!1 &5309855438325731983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1492,11 +1527,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7100718627040136980}
   m_LocalRotation: {x: 0.18001905, y: -0, z: -0, w: 0.98366314}
-  m_LocalPosition: {x: -0.16839662, y: 2.621, z: -3.086}
+  m_LocalPosition: {x: 0, y: 1.663511, z: -3.0465758}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8192465472615507453}
-  m_RootOrder: 9
+  m_Father: {fileID: 3949095178173764040}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 20.742, y: 0, z: 0}
 --- !u!20 &6700184743180214434
 Camera:

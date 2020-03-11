@@ -31,7 +31,7 @@ public class Character : MonoBehaviour
     public bool AttackInput;
     public int ComboIndex = 0;
     public bool IsAttack = false;
-    public bool canCombo = false;
+    public bool canCombo = true;
 
     public Vector2 controlRotation;
 
@@ -96,51 +96,9 @@ public class Character : MonoBehaviour
 
     void UpdateAction()
     {
-        //GetInput();
+        GetInput();
 
-        if (Input.GetMouseButtonDown(0) && IsAttack == false)
-        {
-
-            IsAttack = true;
-            canMove = false;
-            canCombo = false;
-            comboTimer = 0.0f;
-            animator.SetBool("Attacking", true);
-            animator.SetInteger("combo", ComboIndex);
-
-            StartCoroutine("OnCompleteAttackAnimation");
-
-            ComboIndex = (ComboIndex + 1) % 3;
-        }
-
-
-
-
-        //CurrentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-        //if (CurrentStateInfo.ToString() != LastStateInfo.ToString() &&
-        //    LastStateInfo.IsTag("attack"))
-        //{
-        //    IsAttack = false;
-        //    animator.SetBool("Attacking", false);
-        //    canMove = true;
-        //    canCombo = true;
-        //    comboTimer = 0.0f;
-        //}
-
-        if (canCombo && ComboIndex != 0)
-        {
-            comboTimer += Time.deltaTime;
-            if (comboTimer >= 1.5f)
-            {
-                comboTimer = 0.0f;
-                ComboIndex = 0;
-                animator.SetInteger("combo", ComboIndex);
-                canCombo = false;
-                Debug.Log("Combo Timer Up");
-            }
-        }
-        //LastStateInfo = CurrentStateInfo;
+        
     }
 
     public void UpdateSpeed()
@@ -215,36 +173,69 @@ public class Character : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
             {
-                Attacking();
+              ComboStarter();
             }
     }
 
-    void Attacking()
+    void ComboStarter()
     {
 
-        if (!IsAttack)
+        if (canCombo)
         {
-            IsAttack = true;
-            canMove = false;
-            canCombo = false;
-            comboTimer = 0.0f;
-            animator.SetBool("Attacking", true);
-            animator.SetInteger("combo", ComboIndex);
-            ComboIndex = (ComboIndex + 1) % 3;
+            ComboIndex++;
         }
 
+        if (ComboIndex == 1)
+        {
+            animator.SetInteger("condition", 4);
+            canMove = false;
+        }
+
+        ComboIndex = Mathf.Clamp(ComboIndex, 0, 3);
+
+        Debug.Log(ComboIndex);
     }
 
-    IEnumerator OnCompleteAttackAnimation()
+    public void ComboCheck()
     {
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-            yield return null;
+        canCombo = false;
+        Debug.Log(canCombo);
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && ComboIndex == 1 )
+        {
+            animator.SetInteger("condition", 0);
+            canCombo = true;
+            canMove = true;
+            ComboIndex = 0;
+        }
 
-        // TODO: Do something when animation did complete
-        IsAttack = false;
-        animator.SetBool("Attacking", false);
-        canMove = true;
-        canCombo = true;
-        comboTimer = 0.0f;
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && ComboIndex >= 2)
+        {
+            animator.SetInteger("condition", 5);
+            canCombo = true;
+        }
+
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack02") && ComboIndex == 2)
+        {
+            animator.SetInteger("condition", 0);
+            canCombo = true;
+            canMove = true;
+            ComboIndex = 0;
+        }
+
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack02") && ComboIndex >= 3)
+        {
+            animator.SetInteger("condition", 6);
+            canCombo = true;
+        }
+
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack03") && ComboIndex >= 3)
+        {
+            animator.SetInteger("condition", 0);
+            canCombo = true;
+            canMove = true;
+            ComboIndex = 0;
+        }
     }
+
+    
 }

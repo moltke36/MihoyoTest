@@ -420,7 +420,7 @@ MonoBehaviour:
   AttackInput: 0
   ComboIndex: 0
   IsAttack: 0
-  canCombo: 0
+  canCombo: 1
   controlRotation: {x: 0, y: 0}
 --- !u!143 &1357793321 stripped
 CharacterController:
@@ -497,6 +497,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MasterYi
       objectReference: {fileID: 0}
+    - target: {fileID: 5899034703395614998, guid: 653da40c6d749c848a22495b97e60a4d,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 1488193388217248818, guid: 653da40c6d749c848a22495b97e60a4d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -551,11 +556,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899034703395614998, guid: 653da40c6d749c848a22495b97e60a4d,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5899034703395614999, guid: 653da40c6d749c848a22495b97e60a4d, type: 3}

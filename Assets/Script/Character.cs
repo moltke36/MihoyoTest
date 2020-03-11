@@ -19,7 +19,19 @@ public class Character : MonoBehaviour
     public Vector3 LastInput;
     public Vector2 CameraInput;
     public Vector2 RawMoveInput;
-    public bool HasMovementInput;
+
+    public AnimatorStateInfo CurrentStateInfo;
+    public AnimatorStateInfo LastStateInfo;
+
+    public float comboTimer;
+
+    private bool HasMovementInput;
+    public bool canMove = false;
+
+    public bool AttackInput;
+    public int ComboIndex = 0;
+    public bool IsAttack = false;
+    public bool canCombo = false;
 
     public Vector2 controlRotation;
 
@@ -32,14 +44,15 @@ public class Character : MonoBehaviour
         //Velocity = characterController.velocity;
         //HorizontalVelocity = new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z);
         HasMovementInput = false;
+        canMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         InputTick();
+        UpdateAction();
         UpdateAnimation();
-        Debug.Log(HorizontalVelocity);
     }
 
     private void FixedUpdate()
@@ -51,6 +64,8 @@ public class Character : MonoBehaviour
     public void InputTick()
     {
         RawMoveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        AttackInput = Input.GetButtonDown("Fire1");
 
         Quaternion yawRotation = Quaternion.Euler(0.0f, characterRotation.y, 0.0f);
         Vector3 forward = yawRotation * Vector3.forward;
@@ -79,16 +94,69 @@ public class Character : MonoBehaviour
         animator.SetFloat("HorizontalSpeed", normHorizontalSpeed);
     }
 
+    void UpdateAction()
+    {
+        //GetInput();
+
+        if (Input.GetMouseButtonDown(0) && IsAttack == false)
+        {
+
+            IsAttack = true;
+            canMove = false;
+            canCombo = false;
+            comboTimer = 0.0f;
+            animator.SetBool("Attacking", true);
+            animator.SetInteger("combo", ComboIndex);
+
+            StartCoroutine("OnCompleteAttackAnimation");
+
+            ComboIndex = (ComboIndex + 1) % 3;
+        }
+
+
+
+
+        //CurrentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        //if (CurrentStateInfo.ToString() != LastStateInfo.ToString() &&
+        //    LastStateInfo.IsTag("attack"))
+        //{
+        //    IsAttack = false;
+        //    animator.SetBool("Attacking", false);
+        //    canMove = true;
+        //    canCombo = true;
+        //    comboTimer = 0.0f;
+        //}
+
+        if (canCombo && ComboIndex != 0)
+        {
+            comboTimer += Time.deltaTime;
+            if (comboTimer >= 1.5f)
+            {
+                comboTimer = 0.0f;
+                ComboIndex = 0;
+                animator.SetInteger("combo", ComboIndex);
+                canCombo = false;
+                Debug.Log("Combo Timer Up");
+            }
+        }
+        //LastStateInfo = CurrentStateInfo;
+    }
+
     public void UpdateSpeed()
     {
-        Debug.Log(OSmovementInput);
         Vector3 movementInput = OSmovementInput;
         if (movementInput.sqrMagnitude > 1.0f)
         {
             movementInput.Normalize();
         }
 
-        _targetHorizontalSpeed = movementInput.magnitude * MaxSpeed;
+        if (canMove)
+        {
+            _targetHorizontalSpeed = movementInput.magnitude * MaxSpeed; 
+        }
+        else _targetHorizontalSpeed = 0.0f;
+
         float acceleration = HasMovementInput ? 25f : 25f;
 
         _horizontalSpeed = Mathf.MoveTowards(_horizontalSpeed, _targetHorizontalSpeed, acceleration * Time.deltaTime);
@@ -97,11 +165,14 @@ public class Character : MonoBehaviour
 
     public void Movement()
     {
-        Vector3 movement = _horizontalSpeed * GetMovementDirection();
-        characterController.Move(movement * Time.deltaTime);
-        Vector3 HorizontalMovement = new Vector3(movement.x, 0.0f, movement.z);
-        // Rotate
-        OrientToTargetRotation(HorizontalMovement);
+        if (canMove)
+        { 
+            Vector3 movement = _horizontalSpeed * GetMovementDirection();
+            characterController.Move(movement * Time.deltaTime);
+            Vector3 HorizontalMovement = new Vector3(movement.x, 0.0f, movement.z);
+            // Rotate
+            OrientToTargetRotation(HorizontalMovement);
+        }
     }
 
     public void SetControlRotation(Vector2 controlRotation)
@@ -138,5 +209,42 @@ public class Character : MonoBehaviour
         }
 
         return moveDir;
+    }
+
+    void GetInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+            {
+                Attacking();
+            }
+    }
+
+    void Attacking()
+    {
+
+        if (!IsAttack)
+        {
+            IsAttack = true;
+            canMove = false;
+            canCombo = false;
+            comboTimer = 0.0f;
+            animator.SetBool("Attacking", true);
+            animator.SetInteger("combo", ComboIndex);
+            ComboIndex = (ComboIndex + 1) % 3;
+        }
+
+    }
+
+    IEnumerator OnCompleteAttackAnimation()
+    {
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            yield return null;
+
+        // TODO: Do something when animation did complete
+        IsAttack = false;
+        animator.SetBool("Attacking", false);
+        canMove = true;
+        canCombo = true;
+        comboTimer = 0.0f;
     }
 }

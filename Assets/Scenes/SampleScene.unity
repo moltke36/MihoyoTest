@@ -294,18 +294,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &711322398 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5899034703395614999, guid: 653da40c6d749c848a22495b97e60a4d,
-    type: 3}
-  m_PrefabInstance: {fileID: 5899034702764644873}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a983292729742144e9dd7937b4164186, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1299279611
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +387,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1357793319 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2521023862629522977, guid: 653da40c6d749c848a22495b97e60a4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5899034702764644873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1357793320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357793319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxSpeed: 8
+  _targetHorizontalSpeed: 0
+  _horizontalSpeed: 0
+  animator: {fileID: 1357793322}
+  characterController: {fileID: 1357793321}
+  characterRotation: {x: 0, y: 0}
+  OSmovementInput: {x: 0, y: 0, z: 0}
+  LastInput: {x: 0, y: 0, z: 0}
+  CameraInput: {x: 0, y: 0}
+  RawMoveInput: {x: 0, y: 0}
+  comboTimer: 0
+  canMove: 0
+  AttackInput: 0
+  ComboIndex: 0
+  IsAttack: 0
+  canCombo: 0
+  controlRotation: {x: 0, y: 0}
+--- !u!143 &1357793321 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 5899034703395614998, guid: 653da40c6d749c848a22495b97e60a4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5899034702764644873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1357793322 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8803732162102853960, guid: 653da40c6d749c848a22495b97e60a4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5899034702764644873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1732097830
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ControlRotationSensitivity: 3
   RotationSpeed: 0
-  character: {fileID: 711322398}
+  character: {fileID: 1357793320}
   pivotTargetLocalRotation: {x: 0, y: 0, z: 0, w: 0}
   CameraInput: {x: 0, y: 0}
   PositionSmoothDamp: 0
@@ -522,5 +557,6 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5899034703395614999, guid: 653da40c6d749c848a22495b97e60a4d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 653da40c6d749c848a22495b97e60a4d, type: 3}

@@ -419,8 +419,10 @@ MonoBehaviour:
   canMove: 0
   AttackInput: 0
   ComboIndex: 0
+  CComboIndex: 0
+  nextAnimation: 0
   IsAttack: 0
-  canCombo: 1
+  canCombo: 0
   controlRotation: {x: 0, y: 0}
 --- !u!143 &1357793321 stripped
 CharacterController:

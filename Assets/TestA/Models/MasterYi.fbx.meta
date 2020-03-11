@@ -103,7 +103,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.32543105
+        functionName: ComboCheck
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9475807
+        functionName: AttackFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -132,7 +148,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.49770585
+        functionName: ComboCheck
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.92338705
+        functionName: AttackFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -161,7 +193,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 1
+        functionName: AttackFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -278,7 +318,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.32974133
+      - time: 0.23317578
         functionName: ComboCheck
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -286,8 +326,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.43145165
-        functionName: ComboCheck
+      - time: 0.67241377
+        functionName: AttackFinish
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -323,17 +363,26 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.45967743
+      - time: 0.21829812
         functionName: ComboCheck
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.58405167
+        functionName: AttackFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 169
     - serializedVersion: 16
       name: A3
       takeName: A3
@@ -359,10 +408,19 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.98588735
+      - time: 0.42241433
         functionName: ComboCheck
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.92025864
+        functionName: AttackFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

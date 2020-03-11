@@ -30,6 +30,8 @@ public class Character : MonoBehaviour
 
     public bool AttackInput;
     public int ComboIndex = 0;
+    public int CComboIndex = 0;
+    public int nextAnimation = 0;
     public bool IsAttack = false;
     public bool canCombo = true;
 
@@ -123,14 +125,12 @@ public class Character : MonoBehaviour
 
     public void Movement()
     {
-        if (canMove)
-        { 
+
             Vector3 movement = _horizontalSpeed * GetMovementDirection();
             characterController.Move(movement * Time.deltaTime);
             Vector3 HorizontalMovement = new Vector3(movement.x, 0.0f, movement.z);
             // Rotate
             OrientToTargetRotation(HorizontalMovement);
-        }
     }
 
     public void SetControlRotation(Vector2 controlRotation)
@@ -175,67 +175,144 @@ public class Character : MonoBehaviour
             {
               ComboStarter();
             }
+        if (Input.GetMouseButtonDown(1))
+            {
+                CComboStarter();
+            }
+
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && CComboIndex >= 1)
+        {
+            nextAnimation = 7;
+            canCombo = false;
+        }
+
+        else if ((animator.GetCurrentAnimatorStateInfo(0).IsName("Attack01") || animator.GetCurrentAnimatorStateInfo(0).IsName("CAttack01")) && ComboIndex >= 2)
+        {
+            nextAnimation = 5;
+            canCombo = false;
+        }
+
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack02") && CComboIndex >= 1)
+        {
+            nextAnimation = 8;
+            canCombo = false;
+        }
+
+        else if ((animator.GetCurrentAnimatorStateInfo(0).IsName("Attack02") || animator.GetCurrentAnimatorStateInfo(0).IsName("CAttack02")) && ComboIndex >= 3)
+        {
+            nextAnimation = 6;
+            canCombo = false;
+        }
+
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack03") && CComboIndex >= 1)
+        {
+            nextAnimation = 9;
+            canCombo = false;
+        }
+
     }
 
     void ComboStarter()
     {
+        if (ComboIndex == 0)
+        {
+            ComboIndex=1;
+            animator.SetInteger("condition", 4);
+            canMove = false;
+            canCombo = false;
+        }
 
         if (canCombo)
         {
             ComboIndex++;
-        }
-
-        if (ComboIndex == 1)
-        {
-            animator.SetInteger("condition", 4);
-            canMove = false;
+            canCombo = false;
         }
 
         ComboIndex = Mathf.Clamp(ComboIndex, 0, 3);
 
-        Debug.Log(ComboIndex);
+    }
+
+    void CComboStarter()
+    {
+        if (canCombo && CComboIndex == 0)
+        {
+            CComboIndex = 1;
+            nextAnimation = 7;
+            canMove = false;
+            canCombo = false;
+        }
+
+
+
+        CComboIndex = Mathf.Clamp(CComboIndex, 0, 1);
+
     }
 
     public void ComboCheck()
     {
-        canCombo = false;
-        Debug.Log(canCombo);
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && ComboIndex == 1 )
+        CComboIndex = 0;
+        canCombo = true;
+    }
+    
+    public void AttackFinish()
+    {
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && ComboIndex == 1 && CComboIndex == 0)
         {
-            animator.SetInteger("condition", 0);
-            canCombo = true;
+            nextAnimation = 0;
+            canCombo = false;
             canMove = true;
             ComboIndex = 0;
+            CComboIndex = 0;
         }
 
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && ComboIndex >= 2)
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("CAttack01") && ComboIndex == 1)
         {
-            animator.SetInteger("condition", 5);
-            canCombo = true;
-        }
-
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack02") && ComboIndex == 2)
-        {
-            animator.SetInteger("condition", 0);
-            canCombo = true;
+            nextAnimation = 0;
+            canCombo = false;
             canMove = true;
             ComboIndex = 0;
+            CComboIndex = 0;
         }
 
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack02") && ComboIndex >= 3)
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack02") && ComboIndex == 2 && CComboIndex == 0)
         {
-            animator.SetInteger("condition", 6);
-            canCombo = true;
-        }
-
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack03") && ComboIndex >= 3)
-        {
-            animator.SetInteger("condition", 0);
-            canCombo = true;
+            nextAnimation = 0;
+            canCombo = false;
             canMove = true;
             ComboIndex = 0;
+            CComboIndex = 0;
         }
+
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("CAttack02") && ComboIndex == 2)
+        {
+            nextAnimation = 0;
+            canCombo = false;
+            canMove = true;
+            ComboIndex = 0;
+            CComboIndex = 0;
+        }
+
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack03") && ComboIndex >= 3 && CComboIndex == 0 )
+        {
+            nextAnimation = 0;
+            canCombo = false;
+            canMove = true;
+            ComboIndex = 0;
+            CComboIndex = 0;
+        }
+
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("CAttack03") )
+        {
+            nextAnimation = 0;
+            canCombo = false;
+            canMove = true;
+            ComboIndex = 0;
+            CComboIndex = 0;
+        }
+
+        animator.SetInteger("condition", nextAnimation);
     }
 
-    
 }

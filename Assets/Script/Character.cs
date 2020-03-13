@@ -20,6 +20,7 @@ public class Character : MonoBehaviour
     public Vector2 CameraInput;
     public Vector2 RawMoveInput;
 
+
     public AnimatorStateInfo CurrentStateInfo;
     public AnimatorStateInfo LastStateInfo;
 
@@ -35,6 +36,13 @@ public class Character : MonoBehaviour
     public bool IsAttack = false;
     public bool canCombo = true;
 
+    public bool ishitEffects = false;
+    public float hitEffectTimer = 0.0f;
+    public float hitEffectSpeed = 0.0f;
+    public float hitEffectMaxTime = 0.1f;
+
+    public Collider[] hitboxes = new Collider[3];
+
     public Vector2 controlRotation;
 
     public Vector3 Velocity => characterController.velocity;
@@ -47,6 +55,8 @@ public class Character : MonoBehaviour
         //HorizontalVelocity = new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z);
         HasMovementInput = false;
         canMove = true;
+
+        //Time.timeScale = 0.1f;
     }
 
     // Update is called once per frame
@@ -94,6 +104,8 @@ public class Character : MonoBehaviour
     {
         float normHorizontalSpeed = HorizontalVelocity.magnitude / MaxSpeed;
         animator.SetFloat("HorizontalSpeed", normHorizontalSpeed);
+
+        hitEffects();
     }
 
     void UpdateAction()
@@ -238,7 +250,6 @@ public class Character : MonoBehaviour
         if (canCombo && CComboIndex == 0)
         {
             CComboIndex = 1;
-            nextAnimation = 7;
             canMove = false;
             canCombo = false;
         }
@@ -249,9 +260,77 @@ public class Character : MonoBehaviour
 
     }
 
+    public void HitCheckFront()
+    {
+        var cols = Physics.OverlapBox(hitboxes[0].bounds.center,hitboxes[0].bounds.extents,hitboxes[0].transform.rotation,LayerMask.GetMask("Enemy"));
+
+        foreach (Collider c in cols)
+        {
+            c.SendMessageUpwards("takeDamage", this);
+            if (!ishitEffects)
+            { 
+                ishitEffects = true;
+                hitEffectTimer = 0.0f;
+                animator.speed = hitEffectSpeed;
+            }
+        }
+    }
+
+    public void HitCheckFrontLeftRight()
+    {
+        Collider[] cols0 = Physics.OverlapBox(hitboxes[0].bounds.center, hitboxes[0].bounds.extents, hitboxes[0].transform.rotation, LayerMask.GetMask("Enemy"));
+        Collider[] cols1 = Physics.OverlapBox(hitboxes[1].bounds.center, hitboxes[1].bounds.extents, hitboxes[1].transform.rotation, LayerMask.GetMask("Enemy"));
+        Collider[] cols2 = Physics.OverlapBox(hitboxes[2].bounds.center, hitboxes[2].bounds.extents, hitboxes[2].transform.rotation, LayerMask.GetMask("Enemy"));
+
+        List<Collider> res = new List<Collider>();
+
+        foreach (Collider c in cols0)
+        {
+            if (!res.Contains(c))
+                res.Add(c);
+        }
+
+        foreach (Collider c in cols1)
+        {
+            if (!res.Contains(c))
+                res.Add(c);
+        }
+
+        foreach (Collider c in cols2)
+        {
+            if (!res.Contains(c))
+                res.Add(c);
+        }
+
+
+        foreach (Collider c in res)
+        {
+            c.SendMessageUpwards("takeDamage", this);
+            if (!ishitEffects)
+            {
+                ishitEffects = true;
+                hitEffectTimer = 0.0f;
+                animator.speed = hitEffectSpeed;
+            }
+        }
+    }
+
+    void hitEffects()
+    {
+        if (ishitEffects)
+        {
+            hitEffectTimer += Time.deltaTime;
+            if (hitEffectTimer >= hitEffectMaxTime)
+            {
+                hitEffectTimer = 0.0f;
+                animator.speed = 1.0f;
+                ishitEffects = false;
+            }
+        }
+    }
+
     public void ComboCheck()
     {
-        CComboIndex = 0;
         canCombo = true;
     }
     
@@ -313,6 +392,7 @@ public class Character : MonoBehaviour
         }
 
         animator.SetInteger("condition", nextAnimation);
+        CComboIndex = 0;
     }
 
 }

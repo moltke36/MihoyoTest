@@ -104,7 +104,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.32543105
+      - time: 0.17206179
+        functionName: HitCheckFrontLeftRight
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.172089
         functionName: ComboCheck
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -149,7 +157,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.49770585
+      - time: 0.248307
         functionName: ComboCheck
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -159,6 +167,14 @@ ModelImporter:
         messageOptions: 0
       - time: 0.92338705
         functionName: AttackFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.77824277
+        functionName: HitCheckFront
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -194,6 +210,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.61146957
+        functionName: HitCheckFrontLeftRight
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 1
         functionName: AttackFinish
         data: 
@@ -318,7 +342,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.23317578
+      - time: 0.1738149
         functionName: ComboCheck
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -328,6 +352,14 @@ ModelImporter:
         messageOptions: 0
       - time: 0.67241377
         functionName: AttackFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.2168422
+        functionName: HitCheckFrontLeftRight
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -363,7 +395,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.21829812
+      - time: 0.19538265
+        functionName: HitCheckFront
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.4174107
         functionName: ComboCheck
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -371,7 +411,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.58405167
+      - time: 0.66531575
         functionName: AttackFinish
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -408,8 +448,16 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.42241433
+      - time: 0.32731378
         functionName: ComboCheck
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.35116518
+        functionName: HitCheckFront
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}

@@ -7,46 +7,41 @@ public class Character : MonoBehaviour
 {
     public float MaxSpeed = 8.0f;
 
-    public float _targetHorizontalSpeed; // In meters/second
-    public float _horizontalSpeed; // In meters/second
+    private float _targetHorizontalSpeed; // In meters/second
+    private float _horizontalSpeed; // In meters/second
 
     // TODO: Move to private
     public Animator animator;
     public CharacterController characterController;
 
     public Vector2 characterRotation; // X (Pitch), Y (Yaw)
-    public Vector3 OSmovementInput;
-    public Vector3 LastInput;
-    public Vector2 CameraInput;
-    public Vector2 RawMoveInput;
+    private Vector3 OSmovementInput;
+    private Vector3 LastInput;
+    private Vector2 CameraInput;
+    private Vector2 RawMoveInput;
 
-
-    public AnimatorStateInfo CurrentStateInfo;
-    public AnimatorStateInfo LastStateInfo;
-
-    public float comboTimer;
+    public GameObject hitPSPrefab;
 
     private bool HasMovementInput;
-    public bool canMove = false;
+    private bool canMove = false;
 
-    public bool AttackInput;
-    public int ComboIndex = 0;
-    public int CComboIndex = 0;
-    public int nextAnimation = 0;
-    public bool IsAttack = false;
-    public bool canCombo = true;
+    private int ComboIndex = 0;
+    private int CComboIndex = 0;
+    private int nextAnimation = 0;
+    private bool canCombo = true;
 
-    public bool ishitEffects = false;
-    public float hitEffectTimer = 0.0f;
+    private bool ishitEffects = false;
+    private float hitEffectTimer = 0.0f;
     public float hitEffectSpeed = 0.0f;
     public float hitEffectMaxTime = 0.1f;
 
-    public Collider[] hitboxes = new Collider[3];
+    public Collider hitboxes;
+    private List<Collider> Hitres;
 
-    public Vector2 controlRotation;
+    private Vector2 controlRotation;
 
-    public Vector3 Velocity => characterController.velocity;
-    public Vector3 HorizontalVelocity => new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z);
+    private Vector3 Velocity => characterController.velocity;
+    private Vector3 HorizontalVelocity => new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z);
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +50,7 @@ public class Character : MonoBehaviour
         //HorizontalVelocity = new Vector3(characterController.velocity.x, 0.0f, characterController.velocity.z);
         HasMovementInput = false;
         canMove = true;
-
+        Hitres = new List<Collider>();
         //Time.timeScale = 0.1f;
     }
 
@@ -64,20 +59,20 @@ public class Character : MonoBehaviour
     {
         InputTick();
         UpdateAction();
-        UpdateAnimation();
+
     }
 
     private void FixedUpdate()
     {
         UpdateSpeed();
         Movement();
+        UpdateAnimation();
+        hitEffects();
     }
 
     public void InputTick()
     {
         RawMoveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
-        AttackInput = Input.GetButtonDown("Fire1");
 
         Quaternion yawRotation = Quaternion.Euler(0.0f, characterRotation.y, 0.0f);
         Vector3 forward = yawRotation * Vector3.forward;
@@ -105,7 +100,6 @@ public class Character : MonoBehaviour
         float normHorizontalSpeed = HorizontalVelocity.magnitude / MaxSpeed;
         animator.SetFloat("HorizontalSpeed", normHorizontalSpeed);
 
-        hitEffects();
     }
 
     void UpdateAction()
@@ -183,16 +177,33 @@ public class Character : MonoBehaviour
 
     void GetInput()
     {
+        if (Input.GetButton("Cancel"))
+        {
+            Application.Quit();
+        }
+
         if (Input.GetMouseButtonDown(0))
-            {
-              ComboStarter();
-            }
+        {
+            ComboStarter();
+        }
         if (Input.GetMouseButtonDown(1))
-            {
-                CComboStarter();
-            }
+        {
+            CComboStarter();
+        }
+
+        if (Input.GetButtonDown("Fire3") && animator.GetInteger("condition") == 0)
+            animator.SetInteger("condition", 10);
+
+        if (Input.GetButtonUp("Fire3") && animator.GetInteger("condition") == 10)
+            animator.SetInteger("condition", 0);
 
 
+        ComboDetect();
+
+    }
+
+    private void ComboDetect()
+    {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && CComboIndex >= 1)
         {
             nextAnimation = 7;
@@ -222,7 +233,6 @@ public class Character : MonoBehaviour
             nextAnimation = 9;
             canCombo = false;
         }
-
     }
 
     void ComboStarter()
@@ -260,60 +270,30 @@ public class Character : MonoBehaviour
 
     }
 
-    public void HitCheckFront()
+    public void HitboxOn()
     {
-        var cols = Physics.OverlapBox(hitboxes[0].bounds.center,hitboxes[0].bounds.extents,hitboxes[0].transform.rotation,LayerMask.GetMask("Enemy"));
+        hitboxes.gameObject.SetActive(true);
+    }
 
-        foreach (Collider c in cols)
+    public void HitboxOff()
+    {
+        hitboxes.gameObject.SetActive(false);
+        Hitres.Clear();
+    }
+
+    public void HitresReceive(Collider c)
+    {
+        if (!Hitres.Contains(c))
         {
+            Hitres.Add(c);
+            animator.speed = hitEffectSpeed;
+            var PSeffects = Instantiate(hitPSPrefab, (c.transform.position - transform.position) / 2.0f + c.transform.position + new Vector3(0.0f, hitboxes.transform.position.y,0.0f),Quaternion.identity);
+            ishitEffects = true;
             c.SendMessageUpwards("takeDamage", this);
-            if (!ishitEffects)
-            { 
-                ishitEffects = true;
-                hitEffectTimer = 0.0f;
-                animator.speed = hitEffectSpeed;
-            }
+            Destroy(PSeffects,1f);
         }
     }
 
-    public void HitCheckFrontLeftRight()
-    {
-        Collider[] cols0 = Physics.OverlapBox(hitboxes[0].bounds.center, hitboxes[0].bounds.extents, hitboxes[0].transform.rotation, LayerMask.GetMask("Enemy"));
-        Collider[] cols1 = Physics.OverlapBox(hitboxes[1].bounds.center, hitboxes[1].bounds.extents, hitboxes[1].transform.rotation, LayerMask.GetMask("Enemy"));
-        Collider[] cols2 = Physics.OverlapBox(hitboxes[2].bounds.center, hitboxes[2].bounds.extents, hitboxes[2].transform.rotation, LayerMask.GetMask("Enemy"));
-
-        List<Collider> res = new List<Collider>();
-
-        foreach (Collider c in cols0)
-        {
-            if (!res.Contains(c))
-                res.Add(c);
-        }
-
-        foreach (Collider c in cols1)
-        {
-            if (!res.Contains(c))
-                res.Add(c);
-        }
-
-        foreach (Collider c in cols2)
-        {
-            if (!res.Contains(c))
-                res.Add(c);
-        }
-
-
-        foreach (Collider c in res)
-        {
-            c.SendMessageUpwards("takeDamage", this);
-            if (!ishitEffects)
-            {
-                ishitEffects = true;
-                hitEffectTimer = 0.0f;
-                animator.speed = hitEffectSpeed;
-            }
-        }
-    }
 
     void hitEffects()
     {
@@ -393,6 +373,8 @@ public class Character : MonoBehaviour
 
         animator.SetInteger("condition", nextAnimation);
         CComboIndex = 0;
+
+
     }
 
 }

@@ -104,16 +104,56 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.17206179
-        functionName: HitCheckFrontLeftRight
+      - time: 0.16985686
+        functionName: ComboCheck
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.172089
-        functionName: ComboCheck
+      - time: 0.24733809
+        functionName: HitboxOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.31607142
+        functionName: HitboxOff
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.35625
+        functionName: HitboxOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.45401785
+        functionName: HitboxOff
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6061012
+        functionName: HitboxOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.72023803
+        functionName: HitboxOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -157,7 +197,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.248307
+      - time: 0.4157177
         functionName: ComboCheck
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -165,16 +205,24 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.92338705
-        functionName: AttackFinish
+      - time: 0.7237149
+        functionName: HitboxOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.77824277
-        functionName: HitCheckFront
+      - time: 0.80467284
+        functionName: HitboxOff
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9836549
+        functionName: AttackFinish
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -184,7 +232,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 35
     - serializedVersion: 16
       name: 3
       takeName: 3
@@ -211,7 +259,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.61146957
-        functionName: HitCheckFrontLeftRight
+        functionName: HitboxOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -226,10 +274,34 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.44894856
+        functionName: HitboxOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.74824756
+        functionName: HitboxOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.87581766
+        functionName: HitboxOff
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 61
     - serializedVersion: 16
       name: 4
       takeName: 4
@@ -242,7 +314,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -342,8 +414,24 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.1738149
+      - time: 0.171875
         functionName: ComboCheck
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.1738149
+        functionName: HitboxOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.25833336
+        functionName: HitboxOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -352,14 +440,6 @@ ModelImporter:
         messageOptions: 0
       - time: 0.67241377
         functionName: AttackFinish
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.2168422
-        functionName: HitCheckFrontLeftRight
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -395,8 +475,16 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.19538265
-        functionName: HitCheckFront
+      - time: 0.17082907
+        functionName: HitboxOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.24778035
+        functionName: HitboxOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}
@@ -448,7 +536,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.32731378
+      - time: 0.17027698
+        functionName: HitboxOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.3191463
         functionName: ComboCheck
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -456,8 +552,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.35116518
-        functionName: HitCheckFront
+      - time: 0.42329594
+        functionName: HitboxOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}

@@ -160,7 +160,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.9475807
+      - time: 0.8297604
         functionName: AttackFinish
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
@@ -440,6 +440,14 @@ ModelImporter:
         messageOptions: 0
       - time: 0.67241377
         functionName: AttackFinish
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.8276878
+        functionName: battouEnd
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e2ac02dbf980ca240857acf252187c7f,
           type: 3}

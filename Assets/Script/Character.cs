@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+/*
+时间紧迫，写的比较乱，也没有时间Refactoring。
+*/
 public class Character : MonoBehaviour
 {
     public float MaxSpeed = 8.0f;
+    public float Gravity = 8.0f;
+    public float AccelerateSpeed = 25.0f;
+    public float DecelerateSpeed = 25.0f;
 
     private float _targetHorizontalSpeed; // In meters/second
     private float _horizontalSpeed; // In meters/second
@@ -18,9 +24,20 @@ public class Character : MonoBehaviour
     private Vector3 OSmovementInput;
     private Vector3 LastInput;
     private Vector2 CameraInput;
+    private Vector3 MoveOutput;
     private Vector2 RawMoveInput;
+    public float battouTimer = 0.0f;
+    public bool isbattou = false;
+    public bool battouCD = false;
+    public bool canBattouCombo = false;
+    public bool isBattouCombo = false;
+    public Collider BattouTarget;
+    private List<Collider> BattouList;
 
     public GameObject hitPSPrefab;
+    public GameObject SakuraPSPrefab;
+
+    public GameObject SakuraOnWeapon;
 
     private bool HasMovementInput;
     private bool canMove = false;
@@ -29,13 +46,15 @@ public class Character : MonoBehaviour
     private int CComboIndex = 0;
     private int nextAnimation = 0;
     private bool canCombo = true;
-
+    private bool isDie = false;
+    private float VerticalSpeed;
     private bool ishitEffects = false;
     private float hitEffectTimer = 0.0f;
     public float hitEffectSpeed = 0.0f;
     public float hitEffectMaxTime = 0.1f;
 
     public Collider hitboxes;
+    public Collider Skillhitbox;
     private List<Collider> Hitres;
 
     private Vector2 controlRotation;
@@ -51,15 +70,18 @@ public class Character : MonoBehaviour
         HasMovementInput = false;
         canMove = true;
         Hitres = new List<Collider>();
-        //Time.timeScale = 0.1f;
-    }
+        BattouList = new List<Collider>();
+    //Time.timeScale = 0.1f;
+}
 
     // Update is called once per frame
     void Update()
     {
-        InputTick();
-        UpdateAction();
-
+        if (!isDie)
+        {
+            MoveInput();
+            ActionInput();
+        }
     }
 
     private void FixedUpdate()
@@ -70,7 +92,7 @@ public class Character : MonoBehaviour
         hitEffects();
     }
 
-    public void InputTick()
+    public void MoveInput()
     {
         RawMoveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
@@ -102,13 +124,6 @@ public class Character : MonoBehaviour
 
     }
 
-    void UpdateAction()
-    {
-        GetInput();
-
-        
-    }
-
     public void UpdateSpeed()
     {
         Vector3 movementInput = OSmovementInput;
@@ -123,20 +138,25 @@ public class Character : MonoBehaviour
         }
         else _targetHorizontalSpeed = 0.0f;
 
-        float acceleration = HasMovementInput ? 25f : 25f;
+        float acceleration = HasMovementInput ? AccelerateSpeed : DecelerateSpeed;
 
         _horizontalSpeed = Mathf.MoveTowards(_horizontalSpeed, _targetHorizontalSpeed, acceleration * Time.deltaTime);
+
     }
 
 
     public void Movement()
     {
+        MoveOutput = _horizontalSpeed * GetMovementDirection();
+        if (!characterController.isGrounded)
+        {
+            MoveOutput.y = -Gravity;
+        }
+        characterController.Move(MoveOutput * Time.deltaTime);
+        Vector3 HorizontalMovement = new Vector3(MoveOutput.x, 0.0f, MoveOutput.z);
+        // Rotate
+        OrientToTargetRotation(HorizontalMovement);
 
-            Vector3 movement = _horizontalSpeed * GetMovementDirection();
-            characterController.Move(movement * Time.deltaTime);
-            Vector3 HorizontalMovement = new Vector3(movement.x, 0.0f, movement.z);
-            // Rotate
-            OrientToTargetRotation(HorizontalMovement);
     }
 
     public void SetControlRotation(Vector2 controlRotation)
@@ -175,11 +195,14 @@ public class Character : MonoBehaviour
         return moveDir;
     }
 
-    void GetInput()
+    void ActionInput()
     {
-        if (Input.GetButton("Cancel"))
+        if (Input.GetKeyDown(KeyCode.U))
         {
-            Application.Quit();
+            animator.SetInteger("condition", -1);
+            canMove = false;
+            isDie = true;
+            this.enabled = false;
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -191,14 +214,148 @@ public class Character : MonoBehaviour
             CComboStarter();
         }
 
-        if (Input.GetButtonDown("Fire3") && animator.GetInteger("condition") == 0)
+        if (Input.GetKeyDown(KeyCode.E) && animator.GetInteger("condition") == 0)
+        {
+            canMove = false;
             animator.SetInteger("condition", 10);
+        }
+            
 
-        if (Input.GetButtonUp("Fire3") && animator.GetInteger("condition") == 10)
+        if (Input.GetKeyUp(KeyCode.E) && animator.GetInteger("condition") == 10)
+        {
             animator.SetInteger("condition", 0);
+            canMove = true;
+        }
 
+        if (Input.GetKey(KeyCode.F) )
+        {
+            if (!isbattou && !battouCD)
+            {
+                if (animator.GetInteger("condition") == 0)
+                {
+                    animator.SetInteger("condition", 11);
+                    canMove = false;
+                    isbattou = true;
+                    battouCD = true;
+                    SakuraOnWeapon.SetActive(true);
+                }
+            }
+            else if (isbattou)
+            {
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("battou"))
+                {
+                    animator.speed = 0.01f;
+                    battouTimer += Time.deltaTime;
+                }
+                if (battouTimer > 2.0f)
+                {
+                    battou();
+                }
+            }
+        }
+
+        // Cancel battou
+        if (Input.GetKeyUp(KeyCode.F) && isbattou)
+        {
+            animator.SetInteger("condition", 0);
+            animator.speed = 1.0f;
+            isbattou = false;
+            canMove = true;
+            battouTimer = 0.0f;
+            SakuraOnWeapon.SetActive(false);
+        }
+
+        // Battou Combo
+        if (Input.GetKeyDown(KeyCode.F) && canBattouCombo)
+        {
+            BattouCombo();
+        }
 
         ComboDetect();
+
+        // Skill Cool Down
+        if (battouCD)
+        {
+            battouTimer += Time.deltaTime;
+            if (battouTimer >= 6.0f)
+            { 
+                battouCD = false;
+                battouTimer = 0.0f;
+            }
+        }
+        
+    }
+
+    void battou()
+    {
+        isbattou = false;
+        Collider[] Cols = Physics.OverlapBox(Skillhitbox.bounds.center, Skillhitbox.bounds.extents,transform.rotation, LayerMask.GetMask("Enemy"));
+        foreach (Collider c in Cols)
+        {
+            SpawnHitEffects(c,3.0f,SakuraPSPrefab, "takeDamageBattou");
+            BattouList.Add(c);
+        }
+
+        Vector3 movement = 250.0f * GetMovementDirection();
+        characterController.Move(movement);
+
+        if (Cols.Length > 0)
+        {
+            canBattouCombo = true;
+            //animator.speed = 0.5f;
+        }
+        else animator.speed = 1.0f; 
+    }
+
+    void BattouCombo()
+    {
+        canBattouCombo = false;
+        Collider[] Cols = Physics.OverlapBox(Skillhitbox.bounds.center, Skillhitbox.bounds.extents, transform.rotation, LayerMask.GetMask("Enemy"));
+        if (Cols.Length > 0)
+        {
+            foreach (Collider c in Cols)
+            {
+                if (!BattouList.Contains(c))
+                {
+                    animator.SetTrigger("BattouComboTriger");
+                    animator.speed = 2.0f;
+                    BattouList.Add(c);
+                    BattouTarget = c;
+                    isBattouCombo = true;
+                    return;
+                }
+            }
+        }
+                
+        //animator.speed = 1.0f;
+        //canMove = true;
+    }
+
+    public void battouEnd()
+    {
+        if (isBattouCombo)
+        {
+            isBattouCombo = false;
+            canBattouCombo = true;
+            animator.SetTrigger("BattouComboTriger");
+            animator.speed = 2.0f;
+            SpawnHitEffects(BattouTarget,3.0f,SakuraPSPrefab, "takeDamageBattou");
+            Vector3 direction = (BattouTarget.transform.position - transform.position).normalized;
+            Vector3 movement = ((BattouTarget.transform.position - transform.position).magnitude) * direction;
+            characterController.Move(movement);
+            canBattouCombo = true;
+        }
+        else
+        {
+            animator.SetInteger("condition", 0);
+            canMove = true;
+            battouCD = true;
+            canBattouCombo = false;
+            battouTimer = 0.0f;
+            animator.speed = 1.0f;
+            SakuraOnWeapon.SetActive(false);
+            BattouList.Clear();
+        }
 
     }
 
@@ -286,14 +443,18 @@ public class Character : MonoBehaviour
         if (!Hitres.Contains(c))
         {
             Hitres.Add(c);
-            animator.speed = hitEffectSpeed;
-            var PSeffects = Instantiate(hitPSPrefab, (c.transform.position - transform.position) / 2.0f + c.transform.position + new Vector3(0.0f, hitboxes.transform.position.y,0.0f),Quaternion.identity);
-            ishitEffects = true;
-            c.SendMessageUpwards("takeDamage", this);
-            Destroy(PSeffects,1f);
+            SpawnHitEffects(c,1, hitPSPrefab, "takeDamage");
         }
     }
 
+    private void SpawnHitEffects(Collider c,float DeleteTime, GameObject effectsPrefab,string message)
+    {
+        animator.speed = hitEffectSpeed;
+        var PSeffects = Instantiate(effectsPrefab, (c.transform.position - transform.position) / 2.0f + c.transform.position + new Vector3(0.0f, hitboxes.transform.position.y, 0.0f), Quaternion.identity);
+        ishitEffects = true;
+        c.SendMessageUpwards(message, this);
+        Destroy(PSeffects, DeleteTime);
+    }
 
     void hitEffects()
     {
